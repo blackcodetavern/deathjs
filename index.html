@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>death.js examples</title>
+<script src="src/death.js"></script>
+
+</head>
+
+<body>
+<div id="example1" style="width:300px;height:300px;">
+
+</div>
+    <script>
+        var items = [];
+        const lifeTime = 3000;
+        for(var i = 0;i<100;i++) {
+            items.push(deathjs.giveBirth({x:Math.random()*300,y:Math.random()*300, getAlpha: function () {
+                return Math.max(0,(this.deathStamp - Date.now())/lifeTime);
+            }},lifeTime));
+        }
+
+        setInterval(function () {
+            items.push(deathjs.giveBirth({x:Math.random()*300,y:Math.random()*300, getAlpha: function () {
+                return Math.max(0,(this.deathStamp - Date.now())/lifeTime);
+            }},lifeTime));
+        },2)
+
+        setInterval(function () {
+            var elem = document.getElementById("example1")
+            var innerHTML = "Anzahl:"+items.length;
+            for(var i = 0;i<items.length;i++) {
+                if(Object.isFrozen(items[i]))items.splice(i,1);
+                innerHTML = innerHTML + "<div style='background-color:#f00;width:20px;height:20px;position:absolute;left:"+items[i].x+"px;top:"+items[i].y+"px;opacity:"+(items[i].getAlpha()||0)+"'></div>"
+            }
+            elem.innerHTML = innerHTML;
+        },34)
+        
+    </script>
+</body>
+
+</html>
